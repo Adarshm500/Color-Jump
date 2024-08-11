@@ -19,33 +19,22 @@ public class PlayerController : MonoBehaviour
 
     private void Update() 
     {
-        Debug.Log("movement direction" + moveDirection);
         // player is touching the screen
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("pressing the screen");
-            // if the player is already moving reverse the direction
             moveDirection *= -1;
             isMoving = true;
-            // if (moveLeftDirection)
-            // {
-            //     // player moves in left direction
-            //     movement = -7;
-            //     moveLeftDirection = false;
-            // }
-            // else
-            // {
-            //     // player moves in the right direction
-            //     movement = 0f;
-            //     moveLeftDirection = true;
-            // }
         }
 
         // player stopped touching screen : should stop horizontal movement
         if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("stopped pressing the screen");
             isMoving = false;
+        }
+
+        if (transform.position.x > 5)
+        {
+            
         }
     }
 

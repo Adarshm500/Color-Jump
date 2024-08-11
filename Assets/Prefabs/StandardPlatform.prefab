@@ -85,6 +85,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 10
+  player: {fileID: 7751854115236476396, guid: 41db59130cdb8c24ebaf57327e51a01a, type: 3}
 --- !u!251 &-593705800391418361
 PlatformEffector2D:
   m_ObjectHideFlags: 0
