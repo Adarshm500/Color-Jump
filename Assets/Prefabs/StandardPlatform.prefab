@@ -84,7 +84,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00128cb77374bde4d90d53e2650fd21a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 8
+  jumpForce: 10
 --- !u!251 &-593705800391418361
 PlatformEffector2D:
   m_ObjectHideFlags: 0

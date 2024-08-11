@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Platform : MonoBehaviour
+public class StandardPlatform : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 8f;
     private void OnCollisionEnter2D(Collision2D other) 
