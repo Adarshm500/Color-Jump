@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LightFollor : MonoBehaviour
+public class LightFollow : MonoBehaviour
 {
     private void Update() 
     {

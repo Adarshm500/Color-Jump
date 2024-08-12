@@ -11,7 +11,10 @@ public class PlayerController : MonoBehaviour
     private float moveSpeed = 5f;
     private bool isMoving = false;
     private Vector2 moveDirection = Vector2.right;
-    private float movement;
+
+    public bool spawnOnMovingRight = true;
+    public bool spawnOnMovingLeft = true;
+
     private void Start() 
     {
         rb = GetComponent<Rigidbody2D>();
@@ -30,11 +33,6 @@ public class PlayerController : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {
             isMoving = false;
-        }
-
-        if (transform.position.x > 5)
-        {
-            
         }
     }
 

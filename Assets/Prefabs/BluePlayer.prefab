@@ -56,6 +56,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: BluePlayer
       objectReference: {fileID: 0}
+    - target: {fileID: 3738247040424839817, guid: c1fcf171064ed4347bd5919fda18d1c8, type: 3}
+      propertyPath: dummyPlayer
+      value: 
+      objectReference: {fileID: 3670313727839102613, guid: 57a6e419379b5c54cad7f076fe4b046e, type: 3}
+    - target: {fileID: 3738247040424839817, guid: c1fcf171064ed4347bd5919fda18d1c8, type: 3}
+      propertyPath: dummyPlayerController
+      value: 
+      objectReference: {fileID: 9122650041863406630, guid: b519680d935f4764f8a2fab78996051a, type: 3}
     - target: {fileID: 8849842671410769091, guid: c1fcf171064ed4347bd5919fda18d1c8, type: 3}
       propertyPath: m_Color.g
       value: 0.58431375
