@@ -15,7 +15,6 @@ public class LevelGenerator : MonoBehaviour
     private float upmostPlatformPosition;
     private Camera mainCamera;
     private float platformGenerateBuffer = 1f;
-
     private void Start() 
     {
         mainCamera = Camera.main;
