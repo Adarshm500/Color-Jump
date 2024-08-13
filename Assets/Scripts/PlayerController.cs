@@ -6,8 +6,17 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    Rigidbody2D rb;
+    private static PlayerController instance;
 
+    public enum State
+    {
+        Alive,
+        Dead
+    }
+
+    public State state;
+
+    Rigidbody2D rb;
     private float moveSpeed = 5f;
     private bool isMoving = false;
     private Vector2 moveDirection = Vector2.right;
@@ -15,6 +24,11 @@ public class PlayerController : MonoBehaviour
     public bool spawnOnMovingRight = true;
     public bool spawnOnMovingLeft = true;
 
+    private void Awake() 
+    {
+        instance = this;  
+        state = State.Alive;
+    }
     private void Start() 
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,29 +36,39 @@ public class PlayerController : MonoBehaviour
 
     private void Update() 
     {
-        // player is touching the screen
-        if (Input.GetMouseButtonDown(0))
+        if (state == State.Alive)
         {
-            moveDirection *= -1;
-            isMoving = true;
-        }
+            // player is touching the screen
+            if (Input.GetMouseButtonDown(0))
+            {
+                moveDirection *= -1;
+                isMoving = true;
+            }
 
-        // player stopped touching screen : should stop horizontal movement
-        if (Input.GetMouseButtonUp(0))
-        {
-            isMoving = false;
+            // player stopped touching screen : should stop horizontal movement
+            if (Input.GetMouseButtonUp(0))
+            {
+                isMoving = false;
+            }
         }
     }
 
     private void FixedUpdate() 
     {
-        if (isMoving)
+        if (state == State.Alive)
         {
-            rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
+            if (isMoving)
+            {
+                rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(0, rb.velocity.y);
+            }
         }
         else
         {
-            rb.velocity = new Vector2(0, rb.velocity.y);
+            rb.velocity = new Vector2(0f, 0f);
         }
     }
 }
