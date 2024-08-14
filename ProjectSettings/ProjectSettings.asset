@@ -140,10 +140,7 @@ PlayerSettings:
   visionOSBundleVersion: 1.0
   tvOSBundleVersion: 1.0
   bundleVersion: 1.0.2
-  preloadedAssets:
-  - {fileID: -7366429827375830082, guid: 324e09374156cac4daac0fe827168768, type: 2}
-  - {fileID: 11400000, guid: 3dcb02b4646acd8439876246ace63a31, type: 2}
-  - {fileID: 11400000, guid: 67117b58d3d4f044a8984e5f97613a01, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -177,7 +174,7 @@ PlayerSettings:
   overrideDefaultApplicationIdentifier: 1
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 24
-  AndroidTargetSdkVersion: 32
+  AndroidTargetSdkVersion: 33
   AndroidPreferredInstallLocation: 1
   aotOptions: 
   stripEngineCode: 1
@@ -240,6 +237,7 @@ PlayerSettings:
   iOSMetalForceHardShadows: 0
   metalEditorSupport: 1
   metalAPIValidation: 1
+  metalCompileShaderBinary: 0
   iOSRenderExtraFrameOnPause: 0
   iosCopyPluginsCodeInsteadOfSymlink: 0
   appleDeveloperTeamID: 
@@ -759,6 +757,7 @@ PlayerSettings:
   metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
   metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628, a: 1}
   metroSplashScreenUseBackgroundColor: 0
+  syncCapabilities: 0
   platformCapabilities: {}
   metroTargetDeviceFamilies: {}
   metroFTAName: 
