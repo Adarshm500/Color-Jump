@@ -10,8 +10,9 @@ public class PlayerController : MonoBehaviour
 
     public enum State
     {
-        Alive,
-        Dead
+        Play,
+        Pause,
+        GameOver,
     }
 
     public State state;
@@ -21,13 +22,12 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
     private Vector2 moveDirection = Vector2.right;
 
-    public bool spawnOnMovingRight = true;
-    public bool spawnOnMovingLeft = true;
+    private float interactableArea = Screen.height * 3/4;
 
     private void Awake() 
     {
         instance = this;  
-        state = State.Alive;
+        state = State.Play;
     }
     private void Start() 
     {
@@ -36,17 +36,22 @@ public class PlayerController : MonoBehaviour
 
     private void Update() 
     {
-        if (state == State.Alive)
+        if (state == State.Play)
         {
             // player is touching the screen
             if (Input.GetMouseButtonDown(0))
             {
-                moveDirection *= -1;
-                isMoving = true;
+                Vector2 mouseScreenPosition = Input.mousePosition;
+
+                if (mouseScreenPosition.y < interactableArea)
+                {
+                    moveDirection *= -1;
+                    isMoving = true;
+                }
             }
 
             // player stopped touching screen : should stop horizontal movement
-            if (Input.GetMouseButtonUp(0))
+            else if (Input.GetMouseButtonUp(0))
             {
                 isMoving = false;
             }
@@ -55,20 +60,26 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate() 
     {
-        if (state == State.Alive)
+        if (isMoving && (state == State.Play))
         {
-            if (isMoving)
-            {
-                rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
-            }
-            else
-            {
-                rb.velocity = new Vector2(0, rb.velocity.y);
-            }
+            rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
         }
         else
         {
-            rb.velocity = new Vector2(0f, 0f);
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
+    }
+
+    public void StopGame()
+    {
+        state = State.Pause;
+        rb.gravityScale = 0f;
+        rb.velocity = new Vector2(0, 0);
+    }
+
+    public void ResumeGame()
+    {
+        state = State.Play;
+        rb.gravityScale = 1f;
     }
 }

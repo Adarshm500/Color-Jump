@@ -22,11 +22,13 @@ public class GameOverScreen : MonoBehaviour
 
     public void RestartButton()
     {
+        FindObjectOfType<AudioManager>().Play("Click");
         SceneManager.LoadScene("PlayScene");
     }
 
     public void ExitButton()
     {
+        FindObjectOfType<AudioManager>().Play("Click");
         SceneManager.LoadScene("MainMenuScene");
     }
 }

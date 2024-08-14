@@ -9,6 +9,7 @@ public class EnterGame : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
+            FindObjectOfType<AudioManager>().Play("Click");
             SceneManager.LoadScene("PlayScene");
         }
     }

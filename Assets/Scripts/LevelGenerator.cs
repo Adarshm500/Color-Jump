@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
@@ -8,15 +10,22 @@ public class LevelGenerator : MonoBehaviour
 
     [SerializeField] private int numberOfPlatforms;
     [SerializeField] private float levelWidth = 3f;
-    [SerializeField] private float minY = .2f;
-    [SerializeField] private float maxY = 1.5f;
+    private float minY = .3f;
+    private float maxY = 1.5f;
+
 
     private Vector3 spawnPosition = new Vector3();
     private float upmostPlatformPosition;
     private Camera mainCamera;
     private float platformGenerateBuffer = 1f;
+
+    // maximum distance possible in between the platform for player to be able to progress the level
+    private float maxDifficultyLowerLimit;
+    private float maxDifficultyUpperLimit;
     private void Start() 
     {
+        maxDifficultyLowerLimit = 3f;
+        maxDifficultyUpperLimit = 3.2f;
         mainCamera = Camera.main;
         SpawnPlatforms();
     }
@@ -25,6 +34,17 @@ public class LevelGenerator : MonoBehaviour
     {
         if (mainCamera.transform.position.y +  mainCamera.orthographicSize + platformGenerateBuffer > upmostPlatformPosition)
         {
+            if (maxY < maxDifficultyUpperLimit)
+            {
+                maxY = Mathf.Min(maxY + 0.5f, maxDifficultyUpperLimit);
+            }
+
+            if (minY < maxDifficultyLowerLimit)
+            {
+                minY = Mathf.Min(minY + 0.3f, 
+                maxDifficultyLowerLimit);
+            }
+
             SpawnPlatforms();
         }
     }
@@ -33,8 +53,8 @@ public class LevelGenerator : MonoBehaviour
     {
         for (int i = 0; i < numberOfPlatforms; i++)
         {
-            spawnPosition.y += Random.Range(minY, maxY);
-            spawnPosition.x = Random.Range(-levelWidth, levelWidth);
+            spawnPosition.y += UnityEngine.Random.Range(minY, maxY);
+            spawnPosition.x = UnityEngine.Random.Range(-levelWidth, levelWidth);
             Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
             upmostPlatformPosition = spawnPosition.y;
         }

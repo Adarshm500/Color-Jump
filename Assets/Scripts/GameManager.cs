@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private GameObject buttonGameObject;
+    [SerializeField] private PauseMenuScreen pauseMenuScreen;
     private static GameManager instance;
     private static int score;
     private int startPostion;
@@ -26,5 +29,13 @@ public class GameManager : MonoBehaviour
     public static void AddScore()
     {
         score += 10;
+    }
+
+    public void PauseButton()
+    {
+        FindObjectOfType<AudioManager>().Play("Click");
+        playerController.StopGame();
+        buttonGameObject.SetActive(false);
+        pauseMenuScreen.Setup();
     }
 }

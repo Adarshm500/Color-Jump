@@ -22,7 +22,7 @@ public class GameOver : MonoBehaviour
         if (playerController.transform.position.y < lowerBound)
         {
             // stop the player and trigger gameOver
-            playerController.state = PlayerController.State.Dead;
+            playerController.StopGame();
             gameOverScreen.Setup();
         }
     }
