@@ -5,7 +5,6 @@ using UnityEngine;
 public class StandardPlatform : MonoBehaviour
 {
     [SerializeField] private float jumpForce = 8f;
-    [SerializeField] private Transform player;
     private Camera mainCamera;
     private float lowerBound;
     private float platformDestroyBuffer = 1f;

@@ -7,8 +7,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject buttonGameObject;
     [SerializeField] private PauseMenuScreen pauseMenuScreen;
-    private static GameManager instance;
+    public static GameManager instance;
     private static int score;
+
+    public static bool showInstructions = true;
     private int startPostion;
     private void Awake() 
     {

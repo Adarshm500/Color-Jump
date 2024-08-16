@@ -6,8 +6,6 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
-    private static PlayerController instance;
-
     public enum State
     {
         Play,
@@ -22,36 +20,68 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
     private Vector2 moveDirection = Vector2.right;
 
-    private float interactableArea = Screen.height * 3/4;
+    private float screenMidPosition = Screen.width / 2;
+    private float interactableArea = Screen.height / 2;
+
+    private bool EasyGameMode = SettingsScreen.DifficultySetToEasy;
 
     private void Awake() 
     {
-        instance = this;  
         state = State.Play;
     }
     private void Start() 
     {
         rb = GetComponent<Rigidbody2D>();
+        Debug.Log("at player controller" + SettingsScreen.DifficultySetToEasy);
     }
 
     private void Update() 
     {
+        Debug.Log("in update player controller" + SettingsScreen.DifficultySetToEasy);
         if (state == State.Play)
         {
-            // player is touching the screen
-            if (Input.GetMouseButtonDown(0))
+            if (EasyGameMode)
             {
-                Vector2 mouseScreenPosition = Input.mousePosition;
-
-                if (mouseScreenPosition.y < interactableArea)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    moveDirection *= -1;
-                    isMoving = true;
+                    Vector2 mouseScreenPosition = Input.mousePosition;
+
+                    if (mouseScreenPosition.x < screenMidPosition)
+                    {
+                        moveDirection = Vector2.left;
+                        isMoving = true;
+                    }
+                    else if (mouseScreenPosition.x >= screenMidPosition)
+                    {
+                        moveDirection = Vector2.right;
+                        isMoving = true;
+                    }
                 }
             }
+            else
+            {
+                 // player is touching the screen
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Vector2 mouseScreenPosition = Input.mousePosition;
+
+                    if (mouseScreenPosition.y < interactableArea)
+                    {
+                        moveDirection *= -1;
+                        isMoving = true;
+                    }
+                }
+
+                // player stopped touching screen : should stop horizontal movement
+                else if (Input.GetMouseButtonUp(0))
+                {
+                    isMoving = false;
+                }
+            }
+            // player is touching the screen
 
             // player stopped touching screen : should stop horizontal movement
-            else if (Input.GetMouseButtonUp(0))
+            if (Input.GetMouseButtonUp(0))
             {
                 isMoving = false;
             }
@@ -62,7 +92,23 @@ public class PlayerController : MonoBehaviour
     {
         if (isMoving && (state == State.Play))
         {
-            rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
+            if (EasyGameMode)
+            {
+                Vector2 mouseScreenPosition = Input.mousePosition;
+                if (mouseScreenPosition.x < screenMidPosition)
+                {
+                    moveDirection = Vector2.left;
+                }
+                else if (mouseScreenPosition.x >= screenMidPosition)
+                {
+                    moveDirection = Vector2.right;
+                }
+                rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
+            }
+            else
+            {
+                rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
+            }
         }
         else
         {
