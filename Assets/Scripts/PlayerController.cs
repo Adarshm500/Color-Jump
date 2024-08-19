@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     private float interactableArea = Screen.height / 2;
 
     private bool EasyGameMode = SettingsScreen.DifficultySetToEasy;
+    [SerializeField] GameManager gameManager;
 
     private void Awake() 
     {
@@ -32,12 +33,10 @@ public class PlayerController : MonoBehaviour
     private void Start() 
     {
         rb = GetComponent<Rigidbody2D>();
-        Debug.Log("at player controller" + SettingsScreen.DifficultySetToEasy);
     }
 
     private void Update() 
     {
-        Debug.Log("in update player controller" + SettingsScreen.DifficultySetToEasy);
         if (state == State.Play)
         {
             if (EasyGameMode)
@@ -127,5 +126,14 @@ public class PlayerController : MonoBehaviour
     {
         state = State.Play;
         rb.gravityScale = 1f;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other) 
+    {
+        if (other.tag == "Pickup")
+        {
+            gameManager.AddGems();
+            Destroy(other.gameObject);
+        }
     }
 }

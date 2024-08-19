@@ -7,7 +7,7 @@ using UnityEngine;
 public class LevelGenerator : MonoBehaviour
 {
     [SerializeField] private GameObject platformPrefab;
-
+    [SerializeField] private GameObject gemPrefab;
     [SerializeField] private int numberOfPlatforms;
     [SerializeField] private float levelWidth = 3f;
     private float minY = .3f;
@@ -15,6 +15,7 @@ public class LevelGenerator : MonoBehaviour
 
 
     private Vector3 spawnPosition = new Vector3();
+    private Vector3 gemSpawnPosition = new Vector3();
     private float upmostPlatformPosition;
     private Camera mainCamera;
     private float platformGenerateBuffer = 1f;
@@ -55,6 +56,13 @@ public class LevelGenerator : MonoBehaviour
         {
             spawnPosition.y += UnityEngine.Random.Range(minY, maxY);
             spawnPosition.x = UnityEngine.Random.Range(-levelWidth, levelWidth);
+
+            if (UnityEngine.Random.Range(1,15) == 1)
+            {
+                gemSpawnPosition = spawnPosition + new Vector3(0f, 0.6f, 0f);
+                Instantiate(gemPrefab, gemSpawnPosition, Quaternion.identity);
+            }
+
             Instantiate(platformPrefab, spawnPosition, Quaternion.identity);
             upmostPlatformPosition = spawnPosition.y;
         }

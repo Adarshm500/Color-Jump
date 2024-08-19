@@ -7,17 +7,16 @@ using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviour
 {
-    private static GameOverScreen instance;
     [SerializeField] private Text finalScoreText;
+    [SerializeField] private Text finalGemCount;
+    [SerializeField] GameManager gameManager;
 
-    private void Awake() 
-    {
-        instance = this;
-    }
+
     public void Setup()
     {
         gameObject.SetActive(true);
         finalScoreText.text = GameManager.GetScore().ToString() + "m";
+        finalGemCount.text = "x" + gameManager.GetGemsCollected().ToString();
     }
 
     public void RestartButton()

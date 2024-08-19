@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PauseMenuScreen pauseMenuScreen;
     public static GameManager instance;
     private static int score;
-
+    private int gemsCollected;
     public static bool showInstructions = true;
     private int startPostion;
     private void Awake() 
@@ -28,9 +28,15 @@ public class GameManager : MonoBehaviour
         return score;
     }
 
-    public static void AddScore()
+    public int GetGemsCollected()
     {
-        score += 10;
+        return gemsCollected;
+    }
+
+    public void AddGems()
+    {
+        FindObjectOfType<AudioManager>().Play("Pickup");
+        gemsCollected++;
     }
 
     public void PauseButton()

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayInstructionsScreen : MonoBehaviour
 {
+    [SerializeField] private GameObject playInstructionsPanel;
     [SerializeField] private GameObject oneTouchControlInfoPanel;
     [SerializeField] private GameObject twoTouchControlInfoPanel;
 
@@ -11,7 +12,7 @@ public class PlayInstructionsScreen : MonoBehaviour
     {
         if (GameManager.showInstructions)
         {
-            gameObject.SetActive(true);
+            playInstructionsPanel.gameObject.SetActive(true);
             if (SettingsScreen.DifficultySetToEasy)
             {
                 twoTouchControlInfoPanel.SetActive(true);
@@ -24,7 +25,7 @@ public class PlayInstructionsScreen : MonoBehaviour
         }
         else
         {
-            gameObject.SetActive(false);
+            playInstructionsPanel.gameObject.SetActive(false);
         }
     }
 
@@ -33,7 +34,7 @@ public class PlayInstructionsScreen : MonoBehaviour
     {
         if (Input.GetMouseButtonUp(0))
         {
-            gameObject.SetActive(false);
+            playInstructionsPanel.gameObject.SetActive(false);
         }
     }
 }
