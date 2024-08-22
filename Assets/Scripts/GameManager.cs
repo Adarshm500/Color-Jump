@@ -7,6 +7,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject buttonGameObject;
     [SerializeField] private PauseMenuScreen pauseMenuScreen;
+    [SerializeField] private AudioClip click;
+
+
     public static GameManager instance;
     private static int score;
     private int gemsCollected;
@@ -20,7 +23,10 @@ public class GameManager : MonoBehaviour
 
     private void Update() 
     {
-        score = (int)transform.position.y - startPostion;
+        if (playerController.state == PlayerController.State.Play)
+        {
+            score = (int)transform.position.y - startPostion;
+        }
     }
 
     public static int GetScore()
@@ -35,13 +41,12 @@ public class GameManager : MonoBehaviour
 
     public void AddGems()
     {
-        FindObjectOfType<AudioManager>().Play("Pickup");
         gemsCollected++;
     }
 
     public void PauseButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        AudioSource.PlayClipAtPoint(click, Camera.main.transform.position, 1);
         playerController.StopGame();
         buttonGameObject.SetActive(false);
         pauseMenuScreen.Setup();

@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Gem : MonoBehaviour
 {
-    // private void OnTriggerEnter2D(Collider2D other) 
-    // {
-    //     GameManager.AddGems();
-    //     Destroy(gameObject);
-    // }
+    private float lowerBound;
+    private void Update()
+    {
+        lowerBound = Camera.main.transform.position.y - Camera.main.orthographicSize;
+        if (transform.position.y < lowerBound)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

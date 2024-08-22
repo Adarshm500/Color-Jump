@@ -1,16 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
-    [SerializeField] private Text scoreText;
-
-    private void Start() 
-    {
-
-    }
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     private void Update() 
     {

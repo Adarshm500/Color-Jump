@@ -7,6 +7,8 @@ public class MainMenuManager : MonoBehaviour
 {
 
     [SerializeField] private SettingsScreen settingsScreen;
+    [SerializeField] private AudioClip click;
+
 
     public void StartButton()
     {
@@ -16,18 +18,15 @@ public class MainMenuManager : MonoBehaviour
 
     public void SettingsButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        AudioSource.PlayClipAtPoint(click, transform.position, 1);
         settingsScreen.Setup();
     } 
     public void ExitGameButton()
     {
-        // Check if the game is running in the Unity editor
         #if UNITY_EDITOR
-        // If running in the editor, stop play mode
-        UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorApplication.isPlaying = false;
         #else
-        // If running in a build, quit the application
-        Application.Quit();
+                Application.Quit();
         #endif
     }
 }

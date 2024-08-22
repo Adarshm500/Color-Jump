@@ -6,6 +6,8 @@ using UnityEngine;
 public class SettingsScreen : MonoBehaviour
 {
     public static SettingsScreen instance;
+    [SerializeField] private AudioClip click;
+
 
     public static bool DifficultySetToEasy = true;
     public void Setup()
@@ -15,7 +17,7 @@ public class SettingsScreen : MonoBehaviour
 
     public void EasyButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        PlayClickSound();
         DifficultySetToEasy = true;
         gameObject.SetActive(false);
         GameManager.showInstructions = true;
@@ -23,7 +25,7 @@ public class SettingsScreen : MonoBehaviour
 
     public void DifficultButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        PlayClickSound();
         DifficultySetToEasy = false;
         gameObject.SetActive(false);
         GameManager.showInstructions = true;
@@ -31,7 +33,12 @@ public class SettingsScreen : MonoBehaviour
 
     public void CloseButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        PlayClickSound();
         gameObject.SetActive(false);
+    }
+
+    private void PlayClickSound()
+    {
+        AudioSource.PlayClipAtPoint(click, Camera.main.transform.position, 1f);
     }
 }

@@ -5,12 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenuScreen : MonoBehaviour
 {
-    // private void Update() 
-    // {
-        
-    // }
     [SerializeField] private PlayerController playerController;
     [SerializeField] private GameObject buttonGameObject;
+    [SerializeField] private AudioClip click;
+
 
     public void Setup()
     {
@@ -18,7 +16,7 @@ public class PauseMenuScreen : MonoBehaviour
     }
     public void ResumeButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        AudioSource.PlayClipAtPoint(click, Camera.main.transform.position, 1);
         gameObject.SetActive(false);
         buttonGameObject.SetActive(true);
         playerController.ResumeGame();
@@ -26,7 +24,7 @@ public class PauseMenuScreen : MonoBehaviour
 
     public void MenuButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        AudioSource.PlayClipAtPoint(click, Camera.main.transform.position, 1);
         SceneManager.LoadScene("MainMenuScene");
     }
 }

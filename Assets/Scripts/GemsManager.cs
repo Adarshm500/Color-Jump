@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GemsManager : MonoBehaviour
 {
-    [SerializeField] private Text gemCountText;
+    [SerializeField] private TextMeshProUGUI gemCountText;
     [SerializeField] GameManager gameManager;
 
 

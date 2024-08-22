@@ -12,6 +12,7 @@ public class PlayInstructionsScreen : MonoBehaviour
     {
         if (GameManager.showInstructions)
         {
+            CameraController.instance.cameraSpeed = 0f;
             playInstructionsPanel.gameObject.SetActive(true);
             if (SettingsScreen.DifficultySetToEasy)
             {
@@ -21,7 +22,6 @@ public class PlayInstructionsScreen : MonoBehaviour
             {
                 oneTouchControlInfoPanel.SetActive(true);
             }
-            GameManager.showInstructions = false;
         }
         else
         {
@@ -32,8 +32,10 @@ public class PlayInstructionsScreen : MonoBehaviour
     
     private void Update() 
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && GameManager.showInstructions)
         {
+            GameManager.showInstructions = false;
+            CameraController.instance.cameraSpeed = CameraController.instance.cameraSpeedInitial;
             playInstructionsPanel.gameObject.SetActive(false);
         }
     }

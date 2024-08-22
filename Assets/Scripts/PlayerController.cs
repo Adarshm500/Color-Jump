@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private AudioClip pickup;
     public enum State
     {
         Play,
@@ -45,12 +46,12 @@ public class PlayerController : MonoBehaviour
                 {
                     Vector2 mouseScreenPosition = Input.mousePosition;
 
-                    if (mouseScreenPosition.x < screenMidPosition)
+                    if ((mouseScreenPosition.x < screenMidPosition) && (mouseScreenPosition.y < interactableArea))
                     {
                         moveDirection = Vector2.left;
                         isMoving = true;
                     }
-                    else if (mouseScreenPosition.x >= screenMidPosition)
+                    else if ((mouseScreenPosition.x >= screenMidPosition) && (mouseScreenPosition.y < interactableArea))
                     {
                         moveDirection = Vector2.right;
                         isMoving = true;
@@ -132,6 +133,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.tag == "Pickup")
         {
+            AudioSource.PlayClipAtPoint(pickup, Camera.main.transform.position, 1);
             gameManager.AddGems();
             Destroy(other.gameObject);
         }

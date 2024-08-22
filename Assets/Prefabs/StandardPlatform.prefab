@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StandardPlatform
       objectReference: {fileID: 0}
+    - target: {fileID: 3018114714097217756, guid: e425c99da78cbfd4b8ae8a237d47ba66, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5643631715362045196, guid: e425c99da78cbfd4b8ae8a237d47ba66, type: 3}
       propertyPath: m_UsedByEffector
       value: 1
@@ -84,8 +88,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00128cb77374bde4d90d53e2650fd21a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 10
-  player: {fileID: 7751854115236476396, guid: 41db59130cdb8c24ebaf57327e51a01a, type: 3}
+  jumpForce: 12
+  jumpSound: {fileID: 8300000, guid: fb60789ebe368324b826c86acd8420d0, type: 3}
 --- !u!251 &-593705800391418361
 PlatformEffector2D:
   m_ObjectHideFlags: 0

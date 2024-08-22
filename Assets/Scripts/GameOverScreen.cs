@@ -1,14 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameOverScreen : MonoBehaviour
 {
-    [SerializeField] private Text finalScoreText;
-    [SerializeField] private Text finalGemCount;
+    [SerializeField] private TextMeshProUGUI finalScoreText;
+    [SerializeField] private TextMeshProUGUI finalGemCountText;
+    [SerializeField] private AudioClip click;
+    
     [SerializeField] GameManager gameManager;
 
 
@@ -16,18 +15,18 @@ public class GameOverScreen : MonoBehaviour
     {
         gameObject.SetActive(true);
         finalScoreText.text = GameManager.GetScore().ToString() + "m";
-        finalGemCount.text = "x" + gameManager.GetGemsCollected().ToString();
+        finalGemCountText.text = "x" + gameManager.GetGemsCollected().ToString();
     }
 
     public void RestartButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        AudioSource.PlayClipAtPoint(click, transform.position, 0.7f);
         SceneManager.LoadScene("PlayScene");
     }
 
     public void ExitButton()
     {
-        FindObjectOfType<AudioManager>().Play("Click");
+        AudioSource.PlayClipAtPoint(click, transform.position, 0.7f);
         SceneManager.LoadScene("MainMenuScene");
     }
 }
