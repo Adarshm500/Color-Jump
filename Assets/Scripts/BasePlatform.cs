@@ -21,7 +21,7 @@ public class BasePlatform : MonoBehaviour
     {
         if (collision.relativeVelocity.y <= 0f) // the player is coming from above
         {
-            AudioSource.PlayClipAtPoint(jumpSound, mainCamera.transform.position, soundVolume);
+            AudioSource.PlayClipAtPoint(jumpSound, Camera.main.transform.position, soundVolume);
             Rigidbody2D rb = collision.collider.GetComponent<Rigidbody2D>();
             if (rb != null)
             {

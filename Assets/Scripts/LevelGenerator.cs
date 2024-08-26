@@ -14,11 +14,11 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private int numberOfPlatforms;
     [SerializeField] private float levelWidth = 3f;
 
-    private float minY = 0.5f;
-    private float maxY = 1.5f;
+    private float minY = 0.717f;
+    private float maxY =  0.75f;
 
     private Vector3 spawnPosition = new Vector3();
-    private Vector3 gemSpawnPosition = new Vector3();
+    private Vector3 gemSpawnPosition = Vector3.zero;
 
     private Camera mainCamera;
     private float upmostPlatformPosition;
@@ -35,13 +35,15 @@ public class LevelGenerator : MonoBehaviour
 
     private int gemProbabilityUpperLimit = 8;
     private int oneTimeJumpProbabilityUpperLimit = 8;
-    private int superJumpProbabilityUpperLimit = 8;
+    private int superJumpProbabilityUpperLimit = 11;
+
+    //private int standardPlatformSpawnedAfterSuper = 0;
 
     private float cameraSpeedUpperLimit = 3f;
    private void Awake()
    {
-        maxDifficultyLowerLimit = 2.25f;
-        maxDifficultyUpperLimit = 4.5f;
+        maxDifficultyLowerLimit = 4.1f;
+        maxDifficultyUpperLimit = 4.4f;
         mainCamera = Camera.main;
    }
 
@@ -63,15 +65,15 @@ public class LevelGenerator : MonoBehaviour
     private void AdjustDifficulty()
     {
         // Encapsulated difficulty adjustment logic
-        maxY = Mathf.Min(maxY + 0.225f, maxDifficultyUpperLimit);
-        minY = Mathf.Min(minY + 0.1125f, maxDifficultyLowerLimit);
+        minY = Mathf.Min(minY * 1.05f, maxDifficultyLowerLimit);
+        maxY = Mathf.Min(maxY * 1.1f, maxDifficultyUpperLimit);
+
         oneTimeJumpProbability = Mathf.Min(oneTimeJumpProbability * 2f, oneTimeJumpProbabilityUpperLimit);
         superJumpProbability = Mathf.Min(superJumpProbability * 2f, superJumpProbabilityUpperLimit);
         gemSpawnProbability = Mathf.Min(gemSpawnProbability * 2f, gemProbabilityUpperLimit);
 
 
-        CameraController.instance.cameraSpeed = Mathf.Min(CameraController.instance.cameraSpeed * 1.12f, cameraSpeedUpperLimit);
-        Debug.Log("CameraSpeed = " + CameraController.instance.cameraSpeed);
+        CameraController.instance.cameraSpeed = Mathf.Min(CameraController.instance.cameraSpeed * 1.35f, cameraSpeedUpperLimit);
     }
 
     private void SpawnPlatforms()
@@ -80,6 +82,11 @@ public class LevelGenerator : MonoBehaviour
         {
             spawnPosition.y += UnityEngine.Random.Range(minY, maxY);
             spawnPosition.x = UnityEngine.Random.Range(-levelWidth, levelWidth);
+
+            if (spawnPosition.y < gemSpawnPosition.y + 1)
+            {
+                continue;
+            }
 
             // Spawn gem with configured probability
             if (UnityEngine.Random.Range(1, 101) <= gemSpawnProbability)
@@ -93,22 +100,32 @@ public class LevelGenerator : MonoBehaviour
             if (platformChoice <= oneTimeJumpProbability)
             {
                 Instantiate(oneTimeJumpPlatformPrefab, spawnPosition, Quaternion.identity);
+                // 1 in 3 chance to geneate standard platform beside it
+                if (UnityEngine.Random.Range(1, 4) == 1)
+                {
+                    // generate a standard platform
+                    if (spawnPosition.x <= 0f)
+                    {
+                        spawnPosition.x = UnityEngine.Random.Range(0f, levelWidth);
+                    }
+                    else
+                    {
+                        spawnPosition.x = UnityEngine.Random.Range(-levelWidth, 0f);
+                    }
+                    Instantiate(standardPlatformPrefab, spawnPosition, Quaternion.identity);
+                }
             }
-            else if (platformChoice <= oneTimeJumpProbability + superJumpProbability)
+            else if ((platformChoice <= oneTimeJumpProbability + superJumpProbability))
             {
                 Instantiate(superJumpPlatformPrefab, spawnPosition, Quaternion.identity);
+                //standardPlatformSpawnedAfterSuper = 0;
             }
             else
             {
                 Instantiate(standardPlatformPrefab, spawnPosition, Quaternion.identity);
+                //standardPlatformSpawnedAfterSuper++;
             }
             upmostPlatformPosition = spawnPosition.y;
-
-            if (gemSpawnPosition.y > spawnPosition.y)
-            {
-                // gem has been spawned
-                spawnPosition.y += 1f;
-            }
         }
     }
 }

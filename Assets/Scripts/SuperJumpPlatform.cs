@@ -7,7 +7,7 @@ public class SuperJumpPlatform : BasePlatform
     protected override void Start()
     {
         base.Start();
-        jumpForce = 20f;
+        jumpForce = 21.5f;
         soundVolume = 1;
     }
 }

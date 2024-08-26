@@ -105,5 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af675ebc909002c46aeb9108bbf5923f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 15
+  jumpForce: 15.5
   jumpSound: {fileID: 8300000, guid: 0286ddaf24cc8c8468db8c5a0995ceb5, type: 3}
