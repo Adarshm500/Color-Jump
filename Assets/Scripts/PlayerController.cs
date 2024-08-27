@@ -1,89 +1,118 @@
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private AudioClip pickup;
-    [SerializeField] private GameManager gameManager;
-    private Rigidbody2D rb;
+    public enum State
+    {
+        Play,
+        Pause,
+        GameOver,
+    }
 
-    public enum State { Play, Pause, GameOver }
-    public State state = State.Play;
+    public State state;
 
-    private float moveSpeed = 6f;
-    private Vector2 moveDirection = Vector2.right;
-    private float screenMidPosition;
-    private float interactableArea;
+    Rigidbody2D rb;
+    private float moveSpeed = 5f;
     private bool isMoving = false;
+    private Vector2 moveDirection = Vector2.right;
+
+    private float screenMidPosition = Screen.width / 2;
+    private float interactableArea = Screen.height / 2;
+
     private bool EasyGameMode = SettingsScreen.DifficultySetToEasy;
-    private float smoothTime = 0.07f;
-    private Vector2 currentVelocity;
+    [SerializeField] GameManager gameManager;
 
-    private void Awake() => rb = GetComponent<Rigidbody2D>();
-
+    private void Awake()
+    {
+        state = State.Play;
+    }
     private void Start()
     {
-        screenMidPosition = Screen.width / 2;
-        interactableArea = Screen.height / 2;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
         if (state == State.Play)
         {
-            HandleTouchInput();
-            //HandleKeyboardInput();
+            if (EasyGameMode)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Vector2 mouseScreenPosition = Input.mousePosition;
+
+                    if ((mouseScreenPosition.x < screenMidPosition) && (mouseScreenPosition.y < interactableArea))
+                    {
+                        moveDirection = Vector2.left;
+                        isMoving = true;
+                    }
+                    else if ((mouseScreenPosition.x >= screenMidPosition) && (mouseScreenPosition.y < interactableArea))
+                    {
+                        moveDirection = Vector2.right;
+                        isMoving = true;
+                    }
+                }
+            }
+            else
+            {
+                // player is touching the screen
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Vector2 mouseScreenPosition = Input.mousePosition;
+
+                    if (mouseScreenPosition.y < interactableArea)
+                    {
+                        moveDirection *= -1;
+                        isMoving = true;
+                    }
+                }
+
+                // player stopped touching screen : should stop horizontal movement
+                else if (Input.GetMouseButtonUp(0))
+                {
+                    isMoving = false;
+                }
+            }
+            // player is touching the screen
+
+            // player stopped touching screen : should stop horizontal movement
+            if (Input.GetMouseButtonUp(0))
+            {
+                isMoving = false;
+            }
         }
     }
 
     private void FixedUpdate()
     {
-        Vector2 targetVelocity = isMoving && state == State.Play
-            ? new Vector2(moveDirection.x * moveSpeed, rb.velocity.y)
-            : new Vector2(0, rb.velocity.y);
-        rb.velocity = Vector2.SmoothDamp(rb.velocity, targetVelocity, ref currentVelocity, smoothTime);
-    }
-
-    private void HandleTouchInput()
-    {
-        if (Input.GetMouseButtonDown(0))
+        if (isMoving && (state == State.Play))
         {
-            Vector2 mousePosition = Input.mousePosition;
-            bool isInInteractableArea = mousePosition.y < interactableArea;
-
             if (EasyGameMode)
             {
-                bool isLeftSide = mousePosition.x < screenMidPosition;
-                moveDirection = isLeftSide ? Vector2.left : Vector2.right;
-                isMoving = isInInteractableArea;
+                Vector2 mouseScreenPosition = Input.mousePosition;
+                if (mouseScreenPosition.x < screenMidPosition)
+                {
+                    moveDirection = Vector2.left;
+                }
+                else if (mouseScreenPosition.x >= screenMidPosition)
+                {
+                    moveDirection = Vector2.right;
+                }
+                rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
             }
-            else if (isInInteractableArea)
+            else
             {
-                moveDirection *= -1;
-                isMoving = true;
+                rb.velocity = new Vector2(moveDirection.x * moveSpeed, rb.velocity.y);
             }
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            isMoving = false;
-        }
-    }
-
-    private void HandleKeyboardInput()
-    {
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            moveDirection = Vector2.left;
-            isMoving = true;
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            moveDirection = Vector2.right;
-            isMoving = true;
         }
         else
         {
-            isMoving = false;
+            rb.velocity = new Vector2(0, rb.velocity.y);
         }
     }
 
@@ -91,7 +120,7 @@ public class PlayerController : MonoBehaviour
     {
         state = State.Pause;
         rb.gravityScale = 0f;
-        rb.velocity = Vector2.zero;
+        rb.velocity = new Vector2(0, 0);
     }
 
     public void ResumeGame()
@@ -102,7 +131,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Pickup"))
+        if (other.tag == "Pickup")
         {
             AudioSource.PlayClipAtPoint(pickup, Camera.main.transform.position, 1);
             gameManager.AddGems();

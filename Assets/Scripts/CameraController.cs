@@ -9,10 +9,14 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float cameraFollowSpeed = 3.5f;
     [SerializeField] private float cameraOffsetY = 5f;
     [SerializeField] PlayerController playerController;
+
+    private float targetYPosition;
+
     private void Awake()
     {
         instance = this;
         cameraSpeed = cameraSpeedInitial;
+        targetYPosition = transform.position.y;
     }
 
     private void LateUpdate()
@@ -22,14 +26,14 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        transform.position += new Vector3(0, cameraSpeed * Time.deltaTime, 0);
+        targetYPosition += cameraSpeed * Time.deltaTime;
 
-        // Check if the player is above the top of the camera's view
+        float newYPosition = Mathf.Lerp(transform.position.y, targetYPosition, cameraFollowSpeed * Time.deltaTime);
+        transform.position = new Vector3(transform.position.x, newYPosition, transform.position.z);
+
         if (playerController.transform.position.y > transform.position.y + cameraOffsetY)
         {
-            // Move the camera upwards to keep the player on screen
-            float newYPosition = Mathf.Lerp(transform.position.y, playerController.transform.position.y - cameraOffsetY, cameraFollowSpeed * Time.deltaTime);
-            transform.position = new Vector3(transform.position.x, newYPosition, transform.position.z);
+            targetYPosition = playerController.transform.position.y - cameraOffsetY;
         }
     }
 }
